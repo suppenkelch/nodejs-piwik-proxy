@@ -79,7 +79,7 @@ PiwikProxy.prototype.process = function process(req, res) {
     var cip, key, url, value, _ref;
 
     // add key/value queries to piwik url
-    cip = req.ip || req._remoteAddress; //|| req.socket.remoteAddress;
+    cip = req._remoteAddress || req.ip; //|| req.socket.remoteAddress;
     url = this.piwikUrl + 'piwik.php?cip=' + cip + '&token_auth=' + this.tokenAuth + '&';
     _ref = req.query;
     for (key in _ref) {
