@@ -61,7 +61,7 @@ PiwikProxy.prototype.process = function process(req, res) {
     lastModified = new Date().getTime() - 86400000;
 
     // Returns 304 if not modified since
-    if (modifiedSince && modifiedSince > lastModified) return res.send(304);
+    if (modifiedSince && modifiedSince > lastModified) return res.status(304).end();
 
     // set HTTP response headers
     res.setHeader('Last-Modified', new Date().toUTCString());
@@ -70,9 +70,9 @@ PiwikProxy.prototype.process = function process(req, res) {
 
     // make request for the javascript file and send it to client
     request.get(this.piwikUrl + 'piwik.js', this.options, function(error, response, body) {
-      if (error) return res.send(500, error.toString());
-      if (response.statusCode >= 300) return res.send(response.statusCode);
-      res.send(response.statusCode, body);
+      if (error) return res.status(500).end(error.toString());
+      if (response.statusCode >= 300) return res.status(response.statusCode).end();
+      res.status(response.statusCode).send(body);
     });
 
   } else {
@@ -99,9 +99,9 @@ PiwikProxy.prototype.process = function process(req, res) {
 
     // make a tracking request to the piwik server
     request.get(url, this.options, function(error, response, body) {
-      if (error) return res.send(500, error.toString());
-      if (response.statusCode >= 300) return res.send(response.statusCode);
-      res.send(response.statusCode, body);
+      if (error) return res.status(500).end(error.toString());
+      if (response.statusCode >= 300) return res.status(response.statusCode).end();
+      res.status(response.statusCode).send(body);
     });
   }
 };
